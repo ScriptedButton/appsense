@@ -1,0 +1,22 @@
+{
+  "name": "appsense",
+  "private": true,
+  "type": "module",
+  "description": "AI iPhone home screen organizer for Cursor",
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r --workspace-concurrency=1 build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "preview": "node packages/mcp-server/dist/http/standalone.js",
+    "dev:preview": "pnpm --filter @appsense/preview dev"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}

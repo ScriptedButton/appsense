@@ -1,0 +1,47 @@
+---
+description: How to organize the user's iPhone home screen with the AppSense MCP tools. Apply when the user asks to organize, clean up, or redesign their iPhone home screen or app layout.
+alwaysApply: false
+---
+
+# Organizing an iPhone home screen with AppSense
+
+You design the layout; `apply_layout` writes it to the phone (after backing up the current one).
+iOS can't send apps to the App Library remotely: they land on extra pages at the end, which the user hides
+in one step (page dots, uncheck pages, Done). The preview checklist remains for manual application.
+
+## Tool order
+
+1. `device_status`: confirm one device is `ready`. If not, relay the hint (plug in, unlock, Trust) and stop.
+2. `get_current_layout` and `list_installed_apps` (call both). The app list gives bundle ids, App Store
+   genres, and current locations; the layout gives widget ids and the starting spec.
+3. Before proposing, ask the user at most 2 short questions when the goal is unclear:
+   their top daily apps, and whether they prefer folders or a single page plus the App Library.
+4. `propose_layout` with a short `name` and a user-facing `rationale` (2-4 sentences, plain language).
+   If it returns errors, fix exactly what it reports and call again. Do not ask the user about validation errors.
+5. Share the preview link it returns (or call `open_preview`). Summarize the plan in a few sentences:
+   pages before and after, what lives in the dock, and the folder names.
+6. When the user wants the change made on their phone, call `apply_layout` and relay its result, including
+   the backup id and any pages they still need to hide. `restore_layout` undoes it.
+7. Call `get_apply_guide` only if the user wants manual steps in chat.
+
+## Layout spec
+
+- Strings are bundle ids (never display names). Folders: `{ "folder": "Name", "apps": [ids] }`.
+  Existing widgets: `{ "widget": "<id from get_current_layout>" }`. New widgets cannot be added.
+- Limits: dock 4 items (folders allowed, widgets not); pages 24 slots (small widget 4, medium 8, large 16);
+  at most 15 pages; folders need 2+ apps (9 per folder page).
+- Every app on the current home screen must be placed or listed in `appLibrary`. For aggressive cleanups
+  set `sendUnlistedToAppLibrary: true` instead of listing hundreds of ids.
+
+## Organizing principles
+
+- Dock: the 4 apps used most, usually communication and browsing. Keep the user's current dock unless asked.
+- Page 1 is prime real estate: single icons for daily apps, placed in the bottom rows (thumb zone).
+  Keep the top rows for widgets or less-touched apps.
+- Fewer pages beat more pages. Aim for 1-2 pages; send rarely used apps to the App Library (it is searchable
+  and auto-categorized, so nothing is lost).
+- Name folders by intent, not by store genre ("Money", "Travel", "Smart Home", "Watch", "Games"), and keep each
+  folder's most-used apps on its first page (the first 9).
+- Don't create folders for 2-3 apps the user opens daily; leave those as icons.
+- Keep existing widgets unless the user wants them gone; the plan warns when widgets are dropped.
+- Minimize churn: if a page or folder is already good, keep it as is so the user still recognizes their phone.

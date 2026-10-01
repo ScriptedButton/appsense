@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "appsense": {
+      "command": "node",
+      "args": ["${workspaceFolder}/packages/mcp-server/dist/index.js"],
+      "env": {
+        "APPSENSE_PORT": "4517"
+      }
+    }
+  }
+}

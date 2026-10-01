@@ -1,0 +1,10 @@
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { readFileSync } from "node:fs";
+const [, , tool, arg] = process.argv;
+const args = !arg ? {} : arg.startsWith("@") ? JSON.parse(readFileSync(arg.slice(1), "utf8")) : JSON.parse(arg);
+const client = new Client({ name: "cli", version: "0" });
+await client.connect(new StdioClientTransport({ command: "node", args: ["dist/index.js"], stderr: "ignore" }));
+const r = await client.callTool({ name: tool, arguments: args });
+console.log(r.isError ? "ERROR\n" : "", r.content[0].text);
+await client.close();

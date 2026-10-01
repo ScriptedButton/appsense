@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+
+  --color-bg: oklch(1 0 0);
+  --color-surface: oklch(0.975 0.004 230);
+  --color-surface-strong: oklch(0.945 0.008 230);
+  --color-line: oklch(0.9 0.01 230);
+  --color-ink: oklch(0.22 0.02 235);
+  --color-muted: oklch(0.47 0.02 235);
+  --color-primary: oklch(0.48 0.12 232);
+  --color-primary-strong: oklch(0.4 0.11 232);
+  --color-primary-soft: oklch(0.95 0.03 232);
+  --color-change: oklch(0.78 0.16 72);
+  --color-change-ink: oklch(0.45 0.11 65);
+  --color-remove: oklch(0.55 0.19 27);
+  --color-success: oklch(0.52 0.12 152);
+
+  --color-wallpaper-top: oklch(0.38 0.08 232);
+  --color-wallpaper-bottom: oklch(0.2 0.05 255);
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  dialog::backdrop {
+    background: oklch(0.15 0.02 235 / 0.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
